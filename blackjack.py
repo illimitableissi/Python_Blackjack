@@ -68,6 +68,7 @@ class Player():
             # list of single card object
             self.all_cards.append(new_cards)
 
+
     def __str__(self):
         return f'Player {self.name} has {len(self.all_cards)} cards'
 
@@ -88,23 +89,42 @@ round_num = 0
 while game_on:
     round_num += 1
     print(f"Round {round_num}")
+    print(player.all_cards[0].value, player.all_cards[1].value)
+    print(dealer.all_cards[0].value, dealer.all_cards[1].value)
 
-    if sum(player.all_cards) > 21:
-        print("Player broke 21. The Dealer wins!")
+    if player.all_cards[0].value + player.all_cards[1].value == 21:
+        print("Player hit 21. Blackjack!")
         game_on = False
         break
 
-    if sum(dealer.all_cards) > 21:
-        print("Dealer broke 21. Player wins!")
+    if dealer.all_cards[0].value + dealer.all_cards[1].value == 21:
+        print("Dealer hits Blackjack!")
         game_on = False
         break
 
-    if sum(dealer.all_cards) == 21:
-        print("Dealer hit 21. Dealer wins!")
+    if dealer.all_cards[0].value + dealer.all_cards[1].value == 21 and player.all_cards[0].value + player.all_cards[1].value == 21:
+        print("Duel Blackjack. Tie Game!")
         game_on = False
         break
-
-    if sum(dealer.all_cards) == 21 and sum(player.all_cards) == 21:
-        print("Both hit 21. Tie Game!")
-        game_on = False
-        break
+    
+    if player.all_cards[0].value + player.all_cards[1].value < 21:
+        result = input("Would you like to hit?")
+        if result == "YES":
+            player.add_cards(new_deck.deal_one())
+            dealer.add_cards(new_deck.deal_one())
+            if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value > 21:
+                print("Player busts. Dealer wins.")
+                game_on = False
+                break
+            if dealer.all_cards[0].value + dealer.all_cards[1].value + dealer.all_cards[-1].value > 21:
+                print("Dealer busts. Player wins!")
+                game_on = False
+                break
+        else:
+            print("Tallying score")
+            if (player.all_cards[0].value + player.all_cards[1].value - 21) < (dealer.all_cards[0].value + dealer.all_cards[1].value - 21):
+                print("Dealer is closer to 21, Dealer wins.")
+                game_on = False
+                break
+            else:
+                print("Player is closer to 21, Player wins!")
