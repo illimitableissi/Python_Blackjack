@@ -89,21 +89,24 @@ round_num = 0
 while game_on:
     round_num += 1
     print(f"Round {round_num}")
-    print(player.all_cards[0].value, player.all_cards[1].value)
-    print(dealer.all_cards[0].value, dealer.all_cards[1].value)
+    print(player.all_cards[0].value, player.all_cards[1].value) 
+
+    if dealer.all_cards[0].value + dealer.all_cards[1].value == 21 and player.all_cards[0].value + player.all_cards[1].value == 21:
+        print("Duel Blackjack. Tie Game!")
+        print(player.all_cards[0].value, player.all_cards[1].value)
+        print(dealer.all_cards[0].value, dealer.all_cards[1].value)
+        game_on = False
+        break
 
     if player.all_cards[0].value + player.all_cards[1].value == 21:
         print("Player hit 21. Blackjack!")
+        print(player.all_cards[0].value, player.all_cards[1].value)   
         game_on = False
         break
 
     if dealer.all_cards[0].value + dealer.all_cards[1].value == 21:
-        print("Dealer hits Blackjack!")
-        game_on = False
-        break
-
-    if dealer.all_cards[0].value + dealer.all_cards[1].value == 21 and player.all_cards[0].value + player.all_cards[1].value == 21:
-        print("Duel Blackjack. Tie Game!")
+        print("Dealer hits Blackjack! Player loses")
+        print(dealer.all_cards[0].value, dealer.all_cards[1].value)
         game_on = False
         break
     
@@ -111,20 +114,48 @@ while game_on:
         result = input("Would you like to hit?")
         if result == "YES":
             player.add_cards(new_deck.deal_one())
-            dealer.add_cards(new_deck.deal_one())
+            print(player.all_cards[0].value, player.all_cards[1].value, player.all_cards[-1].value) 
+            if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value == 21:
+                print("Player hit 21. Player wins.")
+                game_on = False
+                break
             if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value > 21:
                 print("Player busts. Dealer wins.")
                 game_on = False
                 break
-            if dealer.all_cards[0].value + dealer.all_cards[1].value + dealer.all_cards[-1].value > 21:
-                print("Dealer busts. Player wins!")
+            if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value < 21:
+                result_two = input("Would you like to hit?")
+                if result_two == "YES":
+                    player.add_cards(new_deck.deal_one())
+                    print(player.all_cards[0].value, player.all_cards[1].value, player.all_cards[2].value, player.all_cards[-1].value)
+                    if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[2].value + player.all_cards[-1].value == 21:
+                        print("Player hit 21. Player wins.")
+                        game_on = False
+                        break
+                    if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[2].value + player.all_cards[-1].value > 21:
+                        print("Player busts. Dealer wins.")
+                        game_on = False
+                        break
+                else:
+                    print("Tallying score")
+                    if (player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value- 21) < (dealer.all_cards[0].value + dealer.all_cards[1].value - 21):
+                        print("Dealer is closer to 21, Dealer wins.")
+                        print(dealer.all_cards[0].value, dealer.all_cards[1].value)
+                        game_on = False
+                        break
+            if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value > 21:
+                print("Player busts. Dealer wins.")
                 game_on = False
-                break
+                break 
         else:
             print("Tallying score")
             if (player.all_cards[0].value + player.all_cards[1].value - 21) < (dealer.all_cards[0].value + dealer.all_cards[1].value - 21):
                 print("Dealer is closer to 21, Dealer wins.")
+                print(dealer.all_cards[0].value, dealer.all_cards[1].value)
                 game_on = False
                 break
             else:
                 print("Player is closer to 21, Player wins!")
+                print(player.all_cards[0].value, player.all_cards[1].value)
+                print(dealer.all_cards[0].value, dealer.all_cards[1].value)
+                break
