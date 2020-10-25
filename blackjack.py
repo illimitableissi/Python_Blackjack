@@ -138,11 +138,17 @@ while game_on:
                         break
                 else:
                     print("Tallying score")
-                    if (player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value- 21) < (dealer.all_cards[0].value + dealer.all_cards[1].value - 21):
+                    if (player.all_cards[0].value + player.all_cards[1].value + player.all_cards[2].value - 21) < (dealer.all_cards[0].value + dealer.all_cards[1].value - 21):
                         print("Dealer is closer to 21, Dealer wins.")
                         print(dealer.all_cards[0].value, dealer.all_cards[1].value)
                         game_on = False
                         break
+                    else:
+                        print("Player is closer to 21, Player wins!")
+                        print(player.all_cards[0].value, player.all_cards[1].value, player.all_cards[2].value)
+                        print(dealer.all_cards[0].value, dealer.all_cards[1].value)
+                        break
+
             if player.all_cards[0].value + player.all_cards[1].value + player.all_cards[-1].value > 21:
                 print("Player busts. Dealer wins.")
                 game_on = False
